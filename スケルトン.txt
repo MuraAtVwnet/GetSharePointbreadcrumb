@@ -1,0 +1,12 @@
+﻿$URL = Get-Clipboard
+Add-Type -AssemblyName System.Web
+$DecodeURL = [System.Web.HttpUtility]::UrlDecode($URL)
+$DecodeURL -match "\/General\/(?<SPPath>.+?)&"
+$SharePointPath = $Matches.SPPath
+$SharePointBreadcrumb = "General > " + ($SharePointPath -replace "\/", " > ")
+Set-Clipboard -Value $SharePointBreadcrumb
+
+
+
+「AllItems.aspx」より前を消す
+
