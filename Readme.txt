@@ -9,6 +9,12 @@ GetSharePointbreadcrumb
 
 (getsh[TAB] でコマンド補完される)
 
+■ 動作確認環境
+
+Windows PowerShell 5.1
+PowerShell 7.4.2 (Windows)
+たぶん Mac Linux でも動くはず
+
 ■ スクリプトインストール方法
 
 --- 以下を PowerShell プロンプトにコピペ ---
