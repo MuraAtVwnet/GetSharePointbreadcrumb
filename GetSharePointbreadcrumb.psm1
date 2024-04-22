@@ -1,4 +1,4 @@
-﻿function GetSharePointbreadcrumb(){
+﻿function GetSharePointbreadcrumb([switch]$Debug){
 	$URL = Get-Clipboard
 
 	$RejectString = ".+AllItems\.aspx"
@@ -30,6 +30,9 @@
 	}
 	else{
 		Write-Output "NG"
+		if( $Debug ){
+			Write-Output $URL
+		}
 	}
 }
 
