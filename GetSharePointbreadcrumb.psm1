@@ -1,7 +1,7 @@
 ﻿function GetSharePointbreadcrumb([switch]$Debug){
 	$URL = Get-Clipboard
 
-	$RejectString = ".+AllItems\.aspx"
+	$RejectString = ".+AllItems\.aspx\?"
 	$SelectStart = "Shared Documents\/"
 	$SelectEnd = "&"
 
@@ -15,12 +15,16 @@
 		$SelectURL = $DecodeURL
 	}
 
+
+	$RejectStart = "^.+" + $SelectStart
+	$SelectURL2 = $SelectURL -replace $RejectStart, $SelectStart.Replace('\','')
+
 	$RejectEnd = $SelectEnd + ".+"
-	$SelectURL = $SelectURL -replace $RejectEnd
+	$SelectURL3 = $SelectURL2 -replace $RejectEnd, ""
 
 	$ClipbordStrings = @()
 
-	if( $SelectURL -match "$SelectStart(?<SPPath>.+?)$" ){
+	if( $SelectURL3 -match "$SelectStart(?<SPPath>.+?)$" ){
 		$SharePointPath = $Matches.SPPath
 		$SharePointBreadcrumb = $SharePointPath -replace "\/", " > "
 		$ClipbordStrings += $SharePointBreadcrumb
