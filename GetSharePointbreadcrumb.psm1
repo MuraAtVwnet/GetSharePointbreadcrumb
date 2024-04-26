@@ -15,10 +15,12 @@
 		$SelectURL = $DecodeURL
 	}
 
+	$RejectEnd = $SelectEnd + ".+"
+	$SelectURL = $SelectURL -replace $RejectEnd
+
 	$ClipbordStrings = @()
 
-
-	if( $SelectURL -match "$SelectStart(?<SPPath>.+?)$SelectEnd" ){
+	if( $SelectURL -match "$SelectStart(?<SPPath>.+?)$" ){
 		$SharePointPath = $Matches.SPPath
 		$SharePointBreadcrumb = $SharePointPath -replace "\/", " > "
 		$ClipbordStrings += $SharePointBreadcrumb
@@ -31,7 +33,7 @@
 	else{
 		Write-Output "NG"
 		if( $Debug ){
-			Write-Output $URL
+			Write-Output $DecodeURL
 		}
 	}
 }
