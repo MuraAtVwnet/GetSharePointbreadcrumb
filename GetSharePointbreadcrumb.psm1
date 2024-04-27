@@ -1,7 +1,7 @@
 ﻿function GetSharePointbreadcrumb([switch]$Debug){
 	$URL = Get-Clipboard
 
-	$RejectString = ".+AllItems\.aspx\?"
+	$RejectString = "^.+AllItems\.aspx\?"
 	$SelectStart = "Shared Documents\/"
 	$SelectEnd = "&"
 
