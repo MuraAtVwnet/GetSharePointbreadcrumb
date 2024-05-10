@@ -42,6 +42,11 @@ NG となって、うまくパンくずが取れない時は、Debug オプシ�
 最新版があれば、自動ダウンロード & 更新します
 
 
+■ GitHub
+以下リポジトリで公開しています
+https://github.com/MuraAtVwnet/GetSharePointbreadcrumb
+git@github.com:MuraAtVwnet/GetSharePointbreadcrumb.git
+
 
 ■ スクリプトインストール方法
 
