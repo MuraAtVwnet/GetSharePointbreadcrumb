@@ -75,7 +75,7 @@
 		$SharePointPath = $Matches.SPPath
 		$SharePointBreadcrumb = $SharePointPath -replace "\/", " > "
 		$ClipbordStrings += $SharePointBreadcrumb
-		$ClipbordStrings += ""
+#		$ClipbordStrings += ""
 		$ClipbordStrings += $URL
 		$ClipbordStrings += ""
 		Set-Clipboard -Value $ClipbordStrings
