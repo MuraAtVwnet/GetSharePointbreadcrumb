@@ -1,6 +1,5 @@
 ﻿function GetSharePointbreadcrumb([switch]$Debug, [switch]$VertionCheck){
 
-
 	if( $VertionCheck ){
 		$ModuleName = "GetSharePointbreadcrumb"
 		$GitHubName = "MuraAtVwnet"
