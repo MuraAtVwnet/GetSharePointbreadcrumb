@@ -1,16 +1,16 @@
 ﻿# Online installer
 
-$ScriptName = "GetSharePointbreadcrumb"
+$ModuleName = "GetSharePointbreadcrumb"
 $GitHubName = "MuraAtVwnet"
 
-$Module = $ScriptName + ".psm1"
-$Installer = "Install" + $ScriptName + ".ps1"
-$UnInstaller = "UnInstall" + $ScriptName + ".ps1"
-$Vertion = "Vertion" + $ScriptName + ".txt"
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/$GitHubName/$ScriptName/master/$Module -OutFile ~/$Module
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/$GitHubName/$ScriptName/master/install.ps1 -OutFile ~/$Installer
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/$GitHubName/$ScriptName/master/uninstall.ps1 -OutFile ~/$UnInstaller
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/$GitHubName/$ScriptName/master/Vertion.txt -OutFile ~/$Vertion
+$Module = $ModuleName + ".psm1"
+$Installer = "Install" + $ModuleName + ".ps1"
+$UnInstaller = "UnInstall" + $ModuleName + ".ps1"
+$Vertion = "Vertion" + $ModuleName + ".txt"
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/$GitHubName/$ModuleName/master/$Module -OutFile ~/$Module
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/$GitHubName/$ModuleName/master/install.ps1 -OutFile ~/$Installer
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/$GitHubName/$ModuleName/master/uninstall.ps1 -OutFile ~/$UnInstaller
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/$GitHubName/$ModuleName/master/Vertion.txt -OutFile ~/$Vertion
 & ~/$Installer
 Remove-Item ~/$Module
 Remove-Item ~/$Installer
