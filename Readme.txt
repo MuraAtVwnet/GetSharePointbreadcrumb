@@ -54,6 +54,7 @@ git@github.com:MuraAtVwnet/GetSharePointbreadcrumb.git
 
 $ModuleName = "GetSharePointbreadcrumb"
 $GitHubName = "MuraAtVwnet"
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/$GitHubName/$ModuleName/master/OnlineInstall.ps1 -OutFile ~/OnlineInstall.ps1
-& ~/OnlineInstall.ps1
+$OnlineInstallURI = "https://raw.githubusercontent.com/$GitHubName/$ModuleName/master/OnlineInstall.ps1"
+Invoke-WebRequest -Uri $OnlineInstallURI -OutFile "~/OnlineInstall.ps1"
+& "~/OnlineInstall.ps1"
 
