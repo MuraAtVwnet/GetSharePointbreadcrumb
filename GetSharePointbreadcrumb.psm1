@@ -9,16 +9,25 @@
 		$Vertion = "Vertion" + $ModuleName + ".txt"
 		$VertionTemp = "VertionTemp" + $ModuleName + ".tmp"
 
+		$VertionFilePath = Join-Path "~/" $Vertion
+		$VertionTempFilePath = Join-Path "~/" $VertionTemp
+		$GithubCommonURI = "https://raw.githubusercontent.com/$GitHubName/$ModuleName/master/"
+		$VertionFileURI = $GithubCommonURI + "Vertion.txt"
+
+
 		$Update = $False
 
-		if( -not (Test-Path ~/$Vertion)){
+		if( -not (Test-Path $VertionFilePath)){
 			$Update = $True
 		}
 		else{
-			$LocalVertion = Get-Content -Path ~/$Vertion
-			Invoke-WebRequest -Uri https://raw.githubusercontent.com/$GitHubName/$ModuleName/master/Vertion.txt -OutFile ~/$VertionTemp
-			$NowVertion = Get-Content -Path ~/$VertionTemp
-			Remove-Item ~/$VertionTemp
+			$LocalVertion = Get-Content -Path $VertionFilePath
+
+			$URI = $VertionFileURI
+			$OutFile = $VertionTempFilePath
+			Invoke-WebRequest -Uri $URI -OutFile $OutFile
+			$NowVertion = Get-Content -Path $VertionTempFilePath
+			Remove-Item $VertionTempFilePath
 
 			if( $LocalVertion -ne $NowVertion ){
 				$Update = $True
@@ -28,13 +37,30 @@
 		if( $Update ){
 			Write-Output "最新版に更新します"
 			Write-Output "更新完了後、PowerShell プロンプトを開きなおしてください"
-			Invoke-WebRequest -Uri https://raw.githubusercontent.com/$GitHubName/$ModuleName/master/$Module -OutFile ~/$Module
-			Invoke-WebRequest -Uri https://raw.githubusercontent.com/$GitHubName/$ModuleName/master/install.ps1 -OutFile ~/$Installer
-			Invoke-WebRequest -Uri https://raw.githubusercontent.com/$GitHubName/$ModuleName/master/uninstall.ps1 -OutFile ~/$UnInstaller
-			Invoke-WebRequest -Uri https://raw.githubusercontent.com/$GitHubName/$ModuleName/master/Vertion.txt -OutFile ~/$Vertion
-			& ~/$Installer
-			Remove-Item ~/$Module
-			Remove-Item ~/$Installer
+
+			$URI = $GithubCommonURI + $Module
+			$OutFile = "~/$Module"
+			$ModuleFile = $OutFile
+			Invoke-WebRequest -Uri $URI -OutFile $OutFile
+
+			$URI = $GithubCommonURI + "install.ps1"
+			$OutFile = "~/$Installer"
+			$InstallerFile = $OutFile
+			Invoke-WebRequest -Uri $URI -OutFile $OutFile
+
+			$URI = $GithubCommonURI + "uninstall.ps1"
+			$OutFile = "~/$UnInstaller"
+			Invoke-WebRequest -Uri $URI -OutFile $OutFile
+
+			$URI = $VertionFileURI
+			$OutFile = $VertionFilePath
+			Invoke-WebRequest -Uri $URI -OutFile $OutFile
+
+			& $InstallerFile
+
+			Remove-Item $ModuleFile
+			Remove-Item $InstallerFile
+
 			Write-Output "更新完了"
 			Write-Output "PowerShell プロンプトを開きなおしてください"
 		}
