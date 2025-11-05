@@ -3,15 +3,17 @@
 	if( $VertionCheck ){
 		$ModuleName = "GetSharePointbreadcrumb"
 		$GitHubName = "MuraAtVwnet"
+
+		$HomeDirectory = "~/"
 		$Module = $ModuleName + ".psm1"
 		$Installer = "Install" + $ModuleName + ".ps1"
 		$UnInstaller = "UnInstall" + $ModuleName + ".ps1"
 		$Vertion = "Vertion" + $ModuleName + ".txt"
-		$VertionTemp = "VertionTemp" + $ModuleName + ".tmp"
+		$GithubCommonURI = "https://raw.githubusercontent.com/$GitHubName/$ModuleName/master/"
 
+		$VertionTemp = "VertionTemp" + $ModuleName + ".tmp"
 		$VertionFilePath = Join-Path "~/" $Vertion
 		$VertionTempFilePath = Join-Path "~/" $VertionTemp
-		$GithubCommonURI = "https://raw.githubusercontent.com/$GitHubName/$ModuleName/master/"
 		$VertionFileURI = $GithubCommonURI + "Vertion.txt"
 
 
@@ -39,21 +41,19 @@
 			Write-Output "更新完了後、PowerShell プロンプトを開きなおしてください"
 
 			$URI = $GithubCommonURI + $Module
-			$OutFile = "~/$Module"
-			$ModuleFile = $OutFile
-			Invoke-WebRequest -Uri $URI -OutFile $OutFile
+			$ModuleFile = $HomeDirectory + $Module
+			Invoke-WebRequest -Uri $URI -OutFile $ModuleFile
 
 			$URI = $GithubCommonURI + "install.ps1"
-			$OutFile = "~/$Installer"
-			$InstallerFile = $OutFile
-			Invoke-WebRequest -Uri $URI -OutFile $OutFile
+			$InstallerFile = $HomeDirectory + $Installer
+			Invoke-WebRequest -Uri $URI -OutFile $InstallerFile
 
 			$URI = $GithubCommonURI + "uninstall.ps1"
-			$OutFile = "~/$UnInstaller"
+			$OutFile = $HomeDirectory + $UnInstaller
 			Invoke-WebRequest -Uri $URI -OutFile $OutFile
 
-			$URI = $VertionFileURI
-			$OutFile = $VertionFilePath
+			$URI = $GithubCommonURI + "Vertion.txt"
+			$OutFile = $HomeDirectory + $Vertion
 			Invoke-WebRequest -Uri $URI -OutFile $OutFile
 
 			& $InstallerFile
