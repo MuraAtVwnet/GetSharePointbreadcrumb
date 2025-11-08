@@ -1,4 +1,4 @@
-﻿function GetSharePointbreadcrumb([switch]$Debug, [switch]$VertionCheck){
+﻿function GetSharePointbreadcrumb([switch]$Debug, [switch]$FileName, [switch]$VertionCheck){
 
 	if( $VertionCheck ){
 		$ModuleName = "GetSharePointbreadcrumb"
@@ -86,28 +86,41 @@
 		$SelectURL = $DecodeURL
 	}
 
-
-	$RejectStart = "^.+" + $SelectStart
-	$SelectURL2 = $SelectURL -replace $RejectStart, $SelectStart.Replace('\','')
-
-	$RejectEnd = $SelectEnd + ".+"
-	$SelectURL3 = $SelectURL2 -replace $RejectEnd, ""
-
-	$ClipbordStrings = @()
-
-	if( $SelectURL3 -match "$SelectStart(?<SPPath>.+?)$" ){
-		$SharePointPath = $Matches.SPPath
-		$SharePointBreadcrumb = $SharePointPath -replace "\/", " > "
-		$ClipbordStrings += $SharePointBreadcrumb
-		$ClipbordStrings += $URL
-		$ClipbordStrings += ""
-		Set-Clipboard -Value $ClipbordStrings
-		Write-Output "OK"
+	if( $FileName ){
+		if( $DecodeURL.Contains("&file=")){
+			$Temp = $DecodeURL -replace ".+&file=" , ""
+			$ClipbordStrings = $Temp -replace "&.+" , ""
+			Set-Clipboard -Value $ClipbordStrings
+			Write-Output "Done"
+		}
+		else{
+			Write-Output "NG"
+		}
 	}
 	else{
-		Write-Output "NG"
-		if( $Debug ){
-			Write-Output $DecodeURL
+
+		$RejectStart = "^.+" + $SelectStart
+		$SelectURL2 = $SelectURL -replace $RejectStart, $SelectStart.Replace('\','')
+
+		$RejectEnd = $SelectEnd + ".+"
+		$SelectURL3 = $SelectURL2 -replace $RejectEnd, ""
+
+		$ClipbordStrings = @()
+
+		if( $SelectURL3 -match "$SelectStart(?<SPPath>.+?)$" ){
+			$SharePointPath = $Matches.SPPath
+			$SharePointBreadcrumb = $SharePointPath -replace "\/", " > "
+			$ClipbordStrings += $SharePointBreadcrumb
+			$ClipbordStrings += $URL
+			$ClipbordStrings += ""
+			Set-Clipboard -Value $ClipbordStrings
+			Write-Output "OK"
+		}
+		else{
+			Write-Output "NG"
+			if( $Debug ){
+				Write-Output $DecodeURL
+			}
 		}
 	}
 }

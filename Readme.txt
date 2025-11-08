@@ -30,6 +30,9 @@ GetSharePointbreadcrumb の後に、ハイフンを入力して TAB を叩くと
 
 GetSharePointbreadcrumb -[TAB]
 
+-FileName
+ドキュメントのファイル名抽出
+
 -Debug
 
 NG となって、うまくパンくずが取れない時は、Debug オプションを使うと、デコード済みの URL を表示します
