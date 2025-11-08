@@ -79,15 +79,8 @@
 	Add-Type -AssemblyName System.Web
 	$DecodeURL = [System.Web.HttpUtility]::UrlDecode($URL)
 
-	if( $RejectString -ne $null ){
-		$SelectURL = $DecodeURL -replace $RejectString, ""
-	}
-	else{
-		$SelectURL = $DecodeURL
-	}
-
 	if( $FileName ){
-		if( $DecodeURL.Contains("&file=")){
+		if( $DecodeURL.Contains('&file=')){
 			$Temp = $DecodeURL -replace ".+&file=" , ""
 			$ClipbordStrings = $Temp -replace "&.+" , ""
 			Set-Clipboard -Value $ClipbordStrings
@@ -97,7 +90,17 @@
 			Write-Output "NG"
 		}
 	}
+	elseif( $Debug ){
+		Write-Output $DecodeURL
+	}
 	else{
+
+		if( $RejectString -ne $null ){
+			$SelectURL = $DecodeURL -replace $RejectString, ""
+		}
+		else{
+			$SelectURL = $DecodeURL
+		}
 
 		$RejectStart = "^.+" + $SelectStart
 		$SelectURL2 = $SelectURL -replace $RejectStart, $SelectStart.Replace('\','')
@@ -118,9 +121,6 @@
 		}
 		else{
 			Write-Output "NG"
-			if( $Debug ){
-				Write-Output $DecodeURL
-			}
 		}
 	}
 }
