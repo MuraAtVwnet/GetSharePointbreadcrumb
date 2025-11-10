@@ -79,10 +79,14 @@
 	Add-Type -AssemblyName System.Web
 	$DecodeURL = [System.Web.HttpUtility]::UrlDecode($URL)
 
+	$ClipbordStrings = @()
+
 	if( $FileName ){
 		if( $DecodeURL.Contains('&file=')){
 			$Temp = $DecodeURL -replace ".+&file=" , ""
-			$ClipbordStrings = $Temp -replace "&.+" , ""
+			$ClipbordStrings += $Temp -replace "&.+" , ""
+			$ClipbordStrings += $URL
+			$ClipbordStrings += ""
 			Set-Clipboard -Value $ClipbordStrings
 			Write-Output "Done"
 		}
@@ -107,8 +111,6 @@
 
 		$RejectEnd = $SelectEnd + ".+"
 		$SelectURL3 = $SelectURL2 -replace $RejectEnd, ""
-
-		$ClipbordStrings = @()
 
 		if( $SelectURL3 -match "$SelectStart(?<SPPath>.+?)$" ){
 			$SharePointPath = $Matches.SPPath
