@@ -15,14 +15,12 @@ Windows PowerShell 5.1
 PowerShell 7.4.2 (Windows)
 たぶん Mac Linux でも動くはず
 
-Windows Powershell の場合、スクリプトの実行許可が必要なので、以下コマンドで許可状態を確認して下さい
 
-Get-ExecutionPolicy
+■ 使い方
+URL をクリップボートにコピー(Windows Edge Chrome なら Ctrl+L → Ctrl+C)して、PowerShell プロンプトで GetSharePointbreadcrumb と入力すると、クリップボードにパンくずと URL がセットされます
+あとは必要なところにペーストしてください
 
-結果が、「RemoteSigned」になっていないかったら、以下コマンドを入力(1回のみ)
-
-Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
-
+gets[TAB] で GetSharePointbreadcrumb に補完されます
 
 ■ オプション
 
@@ -55,6 +53,8 @@ git@github.com:MuraAtVwnet/GetSharePointbreadcrumb.git
 
 --- 以下を PowerShell プロンプトにコピペ ---
 
+$Policy = Get-ExecutionPolicy
+if($Policy -notin @('RemoteSigned','Unrestricted','Bypass')){Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force}
 $ModuleName = "GetSharePointbreadcrumb"
 $GitHubName = "MuraAtVwnet"
 $URI = "https://raw.githubusercontent.com/$GitHubName/$ModuleName/refs/heads/main/OnlineInstall.ps1"
