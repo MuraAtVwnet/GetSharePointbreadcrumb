@@ -73,9 +73,8 @@
 
 	$URL = Get-Clipboard
 
-	$RejectString = "^.+AllItems\.aspx\?"
-	$SelectStart = "Shared Documents\/"
-	$SelectEnd = "&"
+	$SplitString =  "/Shared Documents/"
+	$SelectEnd = "\&.+$"
 
 	Add-Type -AssemblyName System.Web
 	$DecodeURL = [System.Web.HttpUtility]::UrlDecode($URL)
@@ -99,32 +98,19 @@
 		Write-Output $DecodeURL
 	}
 	else{
-
-		if( $RejectString -ne $null ){
-			$SelectURL = $DecodeURL -replace $RejectString, ""
+		[array]$TempURLs = $DecodeURL -split $SplitString
+		if($TempURLs.Count -ge 3){
+			$TempURL = $TempURLs[2]
+			$SelectURL = $TempURL -replace $SelectEnd, ""
+			$SharePointBreadcrumb = $SelectURL -replace "\/", " > "
+			$ClipbordStrings += "ドキュメント > " + $SharePointBreadcrumb
 		}
-		else{
-			$SelectURL = $DecodeURL
+		else {
+			$ClipbordStrings += "ドキュメント"
 		}
-
-		$RejectStart = "^.+" + $SelectStart
-		$SelectURL2 = $SelectURL -replace $RejectStart, $SelectStart.Replace('\','')
-
-		$RejectEnd = $SelectEnd + ".+"
-		$SelectURL3 = $SelectURL2 -replace $RejectEnd, ""
-
-		if( $SelectURL3 -match "$SelectStart(?<SPPath>.+?)$" ){
-			$SharePointPath = $Matches.SPPath
-			$SharePointBreadcrumb = $SharePointPath -replace "\/", " > "
-			$ClipbordStrings += $SharePointBreadcrumb
-			$ClipbordStrings += $URL
-			$ClipbordStrings += ""
-			Set-Clipboard -Value $ClipbordStrings
-			Write-Output "OK"
-		}
-		else{
-			Write-Output "NG"
-		}
+		$ClipbordStrings += $URL
+		$ClipbordStrings += ""
+		Set-Clipboard -Value $ClipbordStrings
+		Write-Output "done"
 	}
 }
-
