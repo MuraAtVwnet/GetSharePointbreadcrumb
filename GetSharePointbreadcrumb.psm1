@@ -1,4 +1,4 @@
-﻿function GetSharePointbreadcrumb([switch]$Debug, [switch]$FileName, [switch]$VertionCheck){
+﻿function GetSharePointbreadcrumb([switch]$Debug, [switch]$VertionCheck){
 
 	if( $VertionCheck ){
 		$ModuleName = "GetSharePointbreadcrumb"
@@ -71,6 +71,7 @@
 
 	# 以下本来のコード
 
+
 	$URL = Get-Clipboard
 
 	$SplitString =  "/Shared Documents/"
@@ -81,36 +82,36 @@
 
 	$ClipbordStrings = @()
 
-	if( $FileName ){
-		if( $DecodeURL.Contains('&file=')){
-			$Temp = $DecodeURL -replace ".+&file=" , ""
-			$ClipbordStrings += $Temp -replace "&.+" , ""
+	if( $DecodeURL.Contains('.sharepoint.com') ){
+		if( $DecodeURL.Contains('&file=') ){
+				$Temp = $DecodeURL -replace ".+&file=" , ""
+				$ClipbordStrings += $Temp -replace "&.+" , ""
+				$ClipbordStrings += $URL
+				$ClipbordStrings += ""
+				Set-Clipboard -Value $ClipbordStrings
+				Write-Output "OK"
+		}
+		elseif( $Debug ){
+			Write-Output $DecodeURL
+		}
+		else{
+			[array]$TempURLs = $DecodeURL -split $SplitString
+			if($TempURLs.Count -ge 3){
+				$TempURL = $TempURLs[2]
+				$SelectURL = $TempURL -replace $SelectEnd, ""
+				$SharePointBreadcrumb = $SelectURL -replace "\/", " > "
+				$ClipbordStrings += "ドキュメント > " + $SharePointBreadcrumb
+			}
+			else {
+				$ClipbordStrings += "ドキュメント"
+			}
 			$ClipbordStrings += $URL
 			$ClipbordStrings += ""
 			Set-Clipboard -Value $ClipbordStrings
-			Write-Output "Done"
+			Write-Output "OK"
 		}
-		else{
-			Write-Output "NG"
-		}
-	}
-	elseif( $Debug ){
-		Write-Output $DecodeURL
 	}
 	else{
-		[array]$TempURLs = $DecodeURL -split $SplitString
-		if($TempURLs.Count -ge 3){
-			$TempURL = $TempURLs[2]
-			$SelectURL = $TempURL -replace $SelectEnd, ""
-			$SharePointBreadcrumb = $SelectURL -replace "\/", " > "
-			$ClipbordStrings += "ドキュメント > " + $SharePointBreadcrumb
-		}
-		else {
-			$ClipbordStrings += "ドキュメント"
-		}
-		$ClipbordStrings += $URL
-		$ClipbordStrings += ""
-		Set-Clipboard -Value $ClipbordStrings
-		Write-Output "done"
+		Write-Output "NG"
 	}
 }

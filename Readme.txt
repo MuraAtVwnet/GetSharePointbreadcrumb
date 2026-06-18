@@ -2,8 +2,10 @@
 SharePoint のパンくずを取ってくるスクリプトです
 
 ■ 実行方法
-スクリプトをインストールしたら、パンくずを取ってきたい SharePoint を URL をクリップボードにコピーして、以下コマンドを PowerShell プロンプトで実行
+スクリプトをインストールしたら、パンくずを取ってきたい SharePoint の URL をクリップボードにコピーして、以下コマンドを PowerShell プロンプトで実行
 
+ファイルの URL をコピーした場合は、ファイル名を出力します
+(ファイル名の場合は、パンくずが含まれないので、フォルダーの URL は別に処理してください)
 
 GetSharePointbreadcrumb
 
@@ -12,7 +14,7 @@ GetSharePointbreadcrumb
 ■ 動作確認環境
 
 Windows PowerShell 5.1
-PowerShell 7.4.2 (Windows)
+PowerShell 7.6.2 (Windows)
 たぶん Mac Linux でも動くはず
 
 
@@ -27,9 +29,6 @@ gets[TAB] で GetSharePointbreadcrumb に補完されます
 GetSharePointbreadcrumb の後に、ハイフンを入力して TAB を叩くと、オプションが補完されるのて、必要オプションを選択してください
 
 GetSharePointbreadcrumb -[TAB]
-
--FileName
-ドキュメントのファイル名抽出
 
 -Debug
 
