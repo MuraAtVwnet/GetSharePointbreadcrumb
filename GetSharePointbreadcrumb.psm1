@@ -71,7 +71,6 @@
 
 	# 以下本来のコード
 
-
 	$URL = Get-Clipboard
 
 	$SplitString =  "/Shared Documents/"
@@ -82,8 +81,11 @@
 
 	$ClipbordStrings = @()
 
-	if( $DecodeURL.Contains('.sharepoint.com') ){
-		if( $DecodeURL.Contains('&file=') ){
+	if( $Debug ){												# Debug
+			Write-Output $DecodeURL
+	}
+	elseif( $DecodeURL.Contains('.sharepoint.com') ){
+		if( $DecodeURL.Contains('&file=') ){					# File URL の場合
 				$Temp = $DecodeURL -replace ".+&file=" , ""
 				$ClipbordStrings += $Temp -replace "&.+" , ""
 				$ClipbordStrings += $URL
@@ -91,10 +93,7 @@
 				Set-Clipboard -Value $ClipbordStrings
 				Write-Output "OK"
 		}
-		elseif( $Debug ){
-			Write-Output $DecodeURL
-		}
-		else{
+		else{													# フォルダ URL の場合
 			[array]$TempURLs = $DecodeURL -split $SplitString
 			if($TempURLs.Count -ge 3){
 				$TempURL = $TempURLs[2]
@@ -105,13 +104,14 @@
 			else {
 				$ClipbordStrings += "ドキュメント"
 			}
+
 			$ClipbordStrings += $URL
 			$ClipbordStrings += ""
 			Set-Clipboard -Value $ClipbordStrings
 			Write-Output "OK"
 		}
 	}
-	else{
+	else{														# SharePoint URL ではない
 		Write-Output "NG"
 	}
 }
