@@ -84,6 +84,23 @@
 	if( $Debug ){												# Debug
 			Write-Output $DecodeURL
 	}
+	elseif( [System.IO.Path]::IsPathRooted($DecodeURL) ){		# エクスプローラーの Path だった
+		[Array]$DirParts = $URL -split '\\'
+		$LoopCount = $DirParts.Count
+		$StartPoint = 5
+		if( $LoopCount -lt $StartPoint ){
+			Write-Output "NG"
+		}
+		else{
+			$PathString = ""
+			for( $i = $StartPoint -1; $i -lt $LoopCount; $i++ ){
+				$PathString += $DirParts[$i] + " > "
+			}
+			$ClipbordStrings = $PathString -replace ' > $'
+			Set-Clipboard -Value $ClipbordStrings
+			Write-Output "OK(Directory path)"
+		}
+	}
 	elseif( $DecodeURL.Contains('.sharepoint.com') ){
 		if( $DecodeURL.Contains('&file=') ){					# File URL の場合
 				$Temp = $DecodeURL -replace ".+&file=" , ""
